@@ -18,7 +18,7 @@ const ProductDetail = () => {
         const storedUser = localStorage.getItem('userInfo');
         if (storedUser) setUserInfo(JSON.parse(storedUser));
 
-        const found = products.find(p => p.id === parseInt(id));
+        const found = products.find(p => p._id === id);
         if (found) {
             setProduct(found);
         } else {
@@ -28,8 +28,8 @@ const ProductDetail = () => {
 
     if (!product) return null;
 
-    const isWishlisted = wishlist.some(item => item.id === product.id);
-    const cartItem = cart.find(item => item.id === product.id);
+    const isWishlisted = wishlist.some(item => item._id === product._id);
+    const cartItem = cart.find(item => item._id === product._id);
 
     const handleAction = (actionFn) => {
         if (!userInfo) {
@@ -109,9 +109,9 @@ const ProductDetail = () => {
                 {cartItem ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem', width: '100%', maxWidth: '300px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #000', padding: '0.5rem', backgroundColor: '#f9f9f9' }}>
-                            <button onClick={() => updateQuantity(product.id, cartItem.quantity - 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>-</button>
+                            <button onClick={() => updateQuantity(product._id, cartItem.quantity - 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>-</button>
                             <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem' }}>{cartItem.quantity}</span>
-                            <button onClick={() => updateQuantity(product.id, cartItem.quantity + 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>+</button>
+                            <button onClick={() => updateQuantity(product._id, cartItem.quantity + 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>+</button>
                         </div>
                         <button onClick={() => navigate('/cart')} style={{ backgroundColor: '#f5f5f5', border: '1px solid #ddd', padding: '1rem', cursor: 'pointer', fontSize: '1rem', color: '#333', transition: 'background-color 0.2s' }} onMouseOver={e=>e.currentTarget.style.backgroundColor='#eaeaea'} onMouseOut={e=>e.currentTarget.style.backgroundColor='#f5f5f5'}>
                             Check Cart

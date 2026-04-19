@@ -18,7 +18,7 @@ const Collection = () => {
             case 'Price High to Low':
                 return sorted.sort((a, b) => b.price - a.price);
             case 'New In':
-                return sorted.sort((a, b) => b.id - a.id);
+                return sorted.sort((a, b) => b._id.localeCompare(a._id));
             case 'Recommended':
             default:
                 return sorted;
@@ -77,11 +77,11 @@ const Collection = () => {
                 gap: '2.5rem' 
             }}>
                 {displayProducts.map(product => {
-                    const isWishlisted = wishlist.some(item => item.id === product.id);
-                    const isHovered = hoveredProduct === product.id;
+                    const isWishlisted = wishlist.some(item => item._id === product._id);
+                    const isHovered = hoveredProduct === product._id;
 
                     return (
-                        <div key={product.id} style={{ display: 'flex', flexDirection: 'column' }} onMouseOver={() => setHoveredProduct(product.id)} onMouseLeave={() => setHoveredProduct(null)}>
+                        <div key={product._id} style={{ display: 'flex', flexDirection: 'column' }} onMouseOver={() => setHoveredProduct(product._id)} onMouseLeave={() => setHoveredProduct(null)}>
                             <div style={{ 
                                 position: 'relative', 
                                 backgroundImage: `url(${product.image})`, 
@@ -95,7 +95,7 @@ const Collection = () => {
                             onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'} 
                             onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
                                 
-                                <Link to={`/product/${product.id}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                                <Link to={`/product/${product._id}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
 
                                 {isHovered && (
                                     <div 
@@ -129,7 +129,7 @@ const Collection = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <div>
-                                    <Link to={`/product/${product.id}`} style={{ fontSize: '1.1rem', fontWeight: 600, display: 'block', marginBottom: '0.25rem', color: '#000', textDecoration: 'none' }}>{product.name}</Link>
+                                    <Link to={`/product/${product._id}`} style={{ fontSize: '1.1rem', fontWeight: 600, display: 'block', marginBottom: '0.25rem', color: '#000', textDecoration: 'none' }}>{product.name}</Link>
                                     <span style={{ color: '#666', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{product.category}</span>
                                 </div>
                                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem' }}>₹{product.price.toLocaleString()}</span>

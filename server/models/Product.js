@@ -5,8 +5,10 @@ const productSchema = new mongoose.Schema(
     name: { type: String, required: true },
     price: { type: Number, required: true },
     description: String,
-    image: String,
-    countInStock: Number
+    category: String,
+    image: { type: String, required: true },
+    images: [String],
+    stock: { type: Number, required: true, default: 0 }
   },
   { timestamps: true }
 );

@@ -40,7 +40,7 @@ const Cart = () => {
                 ) : (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
                         {cart.map((item, index) => {
-                            const isWishlisted = wishlist.some(w => w.id === item.id);
+                            const isWishlisted = wishlist.some(w => w._id === item._id);
                             
                             return (
                                 <div key={index} style={{ display: 'flex', gap: '2rem', borderBottom: '1px solid #eaeaea', paddingBottom: '2rem' }}>
@@ -61,11 +61,11 @@ const Cart = () => {
                                             
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ccc' }}>
-                                                    <button onClick={() => updateQuantity(item.id, item.quantity - 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>-</button>
+                                                    <button onClick={() => updateQuantity(item._id, item.quantity - 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>-</button>
                                                     <span style={{ padding: '0 1rem', fontFamily: 'var(--font-serif)' }}>{item.quantity}</span>
-                                                    <button onClick={() => updateQuantity(item.id, item.quantity + 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>+</button>
+                                                    <button onClick={() => updateQuantity(item._id, item.quantity + 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>+</button>
                                                 </div>
-                                                <button onClick={() => removeFromCart(item.id)} style={{ textDecoration: 'underline', fontSize: '0.875rem', color: '#555', cursor: 'pointer' }}>Remove</button>
+                                                <button onClick={() => removeFromCart(item._id)} style={{ textDecoration: 'underline', fontSize: '0.875rem', color: '#555', cursor: 'pointer' }}>Remove</button>
                                             </div>
                                         </div>
                                     </div>

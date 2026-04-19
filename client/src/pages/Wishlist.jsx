@@ -47,7 +47,7 @@ const Wishlist = () => {
                     gap: '2.5rem' 
                 }}>
                     {wishlist.map(item => (
-                        <div key={item.id} style={{ display: 'flex', flexDirection: 'column' }}>
+                        <div key={item._id} style={{ display: 'flex', flexDirection: 'column' }}>
                             <div style={{ 
                                 position: 'relative', 
                                 backgroundImage: `url(${item.image})`, 
@@ -61,7 +61,7 @@ const Wishlist = () => {
                             onMouseOver={e => e.currentTarget.style.transform = 'translateY(-5px)'} 
                             onMouseOut={e => e.currentTarget.style.transform = 'translateY(0)'}>
                                 
-                                <Link to={`/product/${item.id}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
+                                <Link to={`/product/${item._id}`} style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0 }} />
 
                                 <div 
                                     style={{ 
@@ -93,7 +93,7 @@ const Wishlist = () => {
 
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                 <div>
-                                    <Link to={`/product/${item.id}`} style={{ fontSize: '1.1rem', fontWeight: 600, display: 'block', marginBottom: '0.25rem', color: '#000' }}>{item.name}</Link>
+                                    <Link to={`/product/${item._id}`} style={{ fontSize: '1.1rem', fontWeight: 600, display: 'block', marginBottom: '0.25rem', color: '#000' }}>{item.name}</Link>
                                     <span style={{ color: '#666', fontSize: '0.875rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.category}</span>
                                 </div>
                                 <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.1rem' }}>₹{item.price.toLocaleString()}</span>

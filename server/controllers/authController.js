@@ -29,6 +29,7 @@ exports.registerUser = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
       token: generateToken(user._id)
     });
 
@@ -49,6 +50,7 @@ exports.loginUser = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
+        role: user.role,
         token: generateToken(user._id)
       });
     } else {
@@ -69,6 +71,7 @@ exports.getUserProfile = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      role: user.role,
     });
   } else {
     res.status(404).json({ message: "User not found" });
