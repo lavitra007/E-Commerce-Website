@@ -12,7 +12,10 @@ connectDB();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: ["http://localhost:5173", "https://faroutluxuries.pages.dev"],
+  credentials: true
+}));
 app.use(express.json());
 
 // Test route
