@@ -4,6 +4,7 @@ const { protect } = require("../middleware/authMiddleware");
 const { admin } = require("../middleware/adminMiddleware");
 const User = require("../models/User");
 const Product = require("../models/Product");
+const AdminStat = require("../models/AdminStat");
 const { upload } = require("../config/cloudinary");
 
 // @route   GET /api/admin/users
@@ -42,9 +43,35 @@ router.get("/stats", protect, admin, async (req, res) => {
   try {
     const totalUsers = await User.countDocuments();
     const totalProducts = await Product.countDocuments();
-    res.json({ totalUsers, activeOrders: 15, revenue: 154000, totalProducts });
+    
+    let adminStat = await AdminStat.findOne();
+    if (!adminStat) {
+      adminStat = await AdminStat.create({ activeOrders: 0, revenue: 0 });
+    }
+    
+    res.json({ totalUsers, activeOrders: adminStat.activeOrders, revenue: adminStat.revenue, totalProducts });
   } catch (error) {
     res.status(500).json({ message: "Server error fetching stats" });
+  }
+});
+
+// @route   PUT /api/admin/stats
+// @desc    Update platform metrics (Admin only)
+// @access  Private/Admin
+router.put("/stats", protect, admin, async (req, res) => {
+  try {
+    const { activeOrders, revenue } = req.body;
+    let adminStat = await AdminStat.findOne();
+    if (!adminStat) {
+      adminStat = new AdminStat();
+    }
+    if (activeOrders !== undefined) adminStat.activeOrders = Number(activeOrders);
+    if (revenue !== undefined) adminStat.revenue = Number(revenue);
+    
+    await adminStat.save();
+    res.json({ activeOrders: adminStat.activeOrders, revenue: adminStat.revenue });
+  } catch (error) {
+    res.status(500).json({ message: "Server error updating stats" });
   }
 });
 

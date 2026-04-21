@@ -20,6 +20,10 @@ const Admin = () => {
     const [image, setImage] = useState(null);
     const [uploading, setUploading] = useState(false);
 
+    // Stats Form states
+    const [updateOrders, setUpdateOrders] = useState('');
+    const [updateRevenue, setUpdateRevenue] = useState('');
+    const [updatingStats, setUpdatingStats] = useState(false);
     const fetchAdminData = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
@@ -75,6 +79,30 @@ const Admin = () => {
             setError(err.response?.data?.message || 'Upload failed');
         } finally {
             setUploading(false);
+        }
+    };
+
+    const handleStatsUpdate = async (e) => {
+        e.preventDefault();
+        setUpdatingStats(true);
+        setError(null);
+        setSuccess(false);
+        try {
+            const payload = {};
+            if (updateOrders) payload.activeOrders = updateOrders;
+            if (updateRevenue) payload.revenue = updateRevenue;
+
+            await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/stats`, payload, {
+                headers: { Authorization: `Bearer ${userInfo.token}` }
+            });
+            setSuccess(true);
+            setUpdateOrders('');
+            setUpdateRevenue('');
+            fetchAdminData();
+        } catch (err) {
+            setError(err.response?.data?.message || 'Failed to update stats');
+        } finally {
+            setUpdatingStats(false);
         }
     };
 
@@ -221,6 +249,23 @@ const Admin = () => {
                                             <div style={{ width: '98%', height: '100%', backgroundColor: '#111' }}></div>
                                         </div>
                                     </div>
+                                </div>
+                                
+                                <h2 style={{ fontSize: '1.75rem', marginBottom: '3rem', marginTop: '5rem', fontWeight: 300, textTransform: 'uppercase', letterSpacing: '0.1em' }}>Analytics Adjustment</h2>
+                                <div style={{ border: '1px solid #ebebeb', padding: '4rem', backgroundColor: '#fff' }}>
+                                    <form onSubmit={handleStatsUpdate} style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+                                        <div>
+                                            <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Override Active Orders</label>
+                                            <input type="number" value={updateOrders} onChange={(e) => setUpdateOrders(e.target.value)} className="luxury-input" placeholder="Enter new count" style={{ width: '100%', border: 'none', borderBottom: '1px solid #ccc', padding: '0.5rem 0', outline: 'none' }} />
+                                        </div>
+                                        <div>
+                                            <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Override Revenue (INR)</label>
+                                            <input type="number" value={updateRevenue} onChange={(e) => setUpdateRevenue(e.target.value)} className="luxury-input" placeholder="Enter new revenue" style={{ width: '100%', border: 'none', borderBottom: '1px solid #ccc', padding: '0.5rem 0', outline: 'none' }} />
+                                        </div>
+                                        <button type="submit" disabled={updatingStats} className="btn-primary" style={{ marginTop: '1rem', width: '100%', padding: '1rem', backgroundColor: '#111', color: '#fff', border: 'none', textTransform: 'uppercase', cursor: 'pointer', letterSpacing: '0.1em' }}>
+                                            {updatingStats ? 'UPDATING...' : 'SYNC OVERRIDES'}
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
