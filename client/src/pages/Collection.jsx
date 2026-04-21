@@ -29,14 +29,14 @@ const Collection = () => {
         }
         switch(sortType) {
             case 'Price Low to High':
-                return sorted.sort((a, b) => a.price - b.price);
+                return filtered.sort((a, b) => a.price - b.price);
             case 'Price High to Low':
-                return sorted.sort((a, b) => b.price - a.price);
+                return filtered.sort((a, b) => b.price - a.price);
             case 'New In':
-                return sorted.sort((a, b) => b._id.localeCompare(a._id));
+                return filtered.sort((a, b) => b._id.localeCompare(a._id));
             case 'Recommended':
             default:
-                return sorted;
+                return filtered;
         }
     };
 

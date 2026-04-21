@@ -51,8 +51,9 @@ const Account = () => {
             setMessage('Profile updated successfully');
             setTimeout(() => setMessage(''), 3000);
         } catch (error) {
-            setMessage('Failed to update profile');
-            setTimeout(() => setMessage(''), 3000);
+            console.error(error);
+            setMessage('Failed to update profile: ' + (error.response?.data?.message || error.message));
+            setTimeout(() => setMessage(''), 5000);
         } finally {
             setLoading(false);
         }
@@ -70,8 +71,9 @@ const Account = () => {
             setMessage('Address added successfully');
             setTimeout(() => setMessage(''), 3000);
         } catch (error) {
-            setMessage('Failed to add address');
-            setTimeout(() => setMessage(''), 3000);
+            console.error(error);
+            setMessage('Failed to add address: ' + (error.response?.data?.message || error.message));
+            setTimeout(() => setMessage(''), 5000);
         } finally {
             setLoading(false);
         }
@@ -87,8 +89,9 @@ const Account = () => {
             setMessage('Address removed successfully');
             setTimeout(() => setMessage(''), 3000);
         } catch (error) {
-            setMessage('Failed to remove address');
-            setTimeout(() => setMessage(''), 3000);
+            console.error(error);
+            setMessage('Failed to remove address: ' + (error.response?.data?.message || error.message));
+            setTimeout(() => setMessage(''), 5000);
         } finally {
             setLoading(false);
         }
