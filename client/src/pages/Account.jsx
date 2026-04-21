@@ -120,7 +120,7 @@ const Account = () => {
             )}
             <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
                 <h1 style={{ fontSize: '3rem', marginBottom: '1rem', fontWeight: 400 }}>My Account</h1>
-                <p style={{ color: '#666', fontSize: '1.25rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+                <p style={{ color: '#666', fontSize: '1.25rem', letterSpacing: '0.05em' }}>
                     Welcome, {userInfo.name || 'Valued Client'}
                 </p>
             </div>
