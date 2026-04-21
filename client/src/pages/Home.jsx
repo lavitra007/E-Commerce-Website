@@ -41,12 +41,12 @@ const Home = () => {
           gridAutoRows: '500px'
         }}>
           {/* Collection I */}
-          <div onClick={() => navigate('/collection')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+          <div onClick={() => navigate('/collection?category=Fine+Jewelry')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
             <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem' }}>Fine Jewelry</span>
           </div>
           
           {/* Collection II */}
-          <div onClick={() => navigate('/collection')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+          <div onClick={() => navigate('/collection?category=Daily+Wear')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
             <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem' }}>Daily Wear</span>
           </div>
           

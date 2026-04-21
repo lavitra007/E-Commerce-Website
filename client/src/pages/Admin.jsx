@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { ShopContext } from '../context/ShopContext';
 
 const Admin = () => {
     const navigate = useNavigate();
+    const { fetchProducts, products } = useContext(ShopContext);
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const [stats, setStats] = useState(null);
     const [users, setUsers] = useState([]);
@@ -18,6 +20,8 @@ const Admin = () => {
     const [stock, setStock] = useState('');
     const [description, setDescription] = useState('');
     const [image, setImage] = useState(null);
+    const [sizes, setSizes] = useState('');
+    const [colors, setColors] = useState('');
     const [uploading, setUploading] = useState(false);
 
     // Stats Form states
@@ -59,6 +63,9 @@ const Admin = () => {
         formData.append('stock', stock);
         formData.append('description', description);
         formData.append('image', image);
+        // Clean and append array fields
+        if (sizes) formData.append('sizes', sizes.split(',').map(s => s.trim()).join(','));
+        if (colors) formData.append('colors', colors.split(',').map(c => c.trim()).join(','));
 
         try {
             await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/products`, formData, {
@@ -73,8 +80,11 @@ const Admin = () => {
             setCategory('');
             setStock('');
             setDescription('');
+            setSizes('');
+            setColors('');
             setImage(null);
             fetchAdminData();
+            fetchProducts(); // Sync immediately with context
         } catch (err) {
             setError(err.response?.data?.message || 'Upload failed');
         } finally {
@@ -138,6 +148,11 @@ const Admin = () => {
                         User Directory
                     </button>
                     <button 
+                        onClick={() => setActiveTab('inventory')}
+                        style={{ background: 'none', border: 'none', color: activeTab === 'inventory' ? '#fff' : '#666', textAlign: 'left', fontSize: '0.9rem', textTransform: 'uppercase', letterSpacing: '0.1em', padding: '1rem 0', borderBottom: '1px solid #222', cursor: 'pointer', transition: 'color 0.3s' }}>
+                        Inventory Directory
+                    </button>
+                    <button 
                         onClick={() => {
                             localStorage.removeItem('userInfo');
                             navigate('/login');
@@ -151,11 +166,40 @@ const Admin = () => {
             {/* Main Content */}
             <div style={{ flex: 1, marginLeft: '280px', padding: '4rem', color: '#111', animation: 'fadeIn 0.8s ease-out' }}>
                 <h1 style={{ fontSize: '3.5rem', marginBottom: '3rem', fontWeight: 300, letterSpacing: '0.1em', textTransform: 'uppercase', fontFamily: 'var(--font-serif)' }}>
-                    {activeTab === 'dashboard' ? 'Overview' : 'User Directory'}
+                    {activeTab === 'dashboard' ? 'Overview' : activeTab === 'users' ? 'User Directory' : 'Inventory Management'}
                 </h1>
                 
                 {error && <div style={{ backgroundColor: '#fff', borderLeft: '4px solid #cc0000', color: '#cc0000', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>{error}</div>}
-                
+                {success && <div style={{ backgroundColor: '#fff', borderLeft: '4px solid #111', color: '#111', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Operation successfully completed. Database synchronized.</div>}
+
+                {activeTab === 'inventory' && (
+                    <div style={{ backgroundColor: '#fff', padding: '3rem', border: '1px solid #ebebeb', boxShadow: '0 10px 30px rgba(0,0,0,0.02)' }}>
+                        <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                            <thead>
+                                <tr style={{ borderBottom: '2px solid #111', textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.8rem' }}>
+                                    <th style={{ padding: '1rem', fontWeight: 600 }}>Image</th>
+                                    <th style={{ padding: '1rem', fontWeight: 600 }}>Name</th>
+                                    <th style={{ padding: '1rem', fontWeight: 600 }}>Category</th>
+                                    <th style={{ padding: '1rem', fontWeight: 600 }}>Stock</th>
+                                    <th style={{ padding: '1rem', fontWeight: 600, textAlign: 'right' }}>Price</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {products?.map(product => (
+                                    <tr key={product._id} style={{ borderBottom: '1px solid #eee' }}>
+                                        <td style={{ padding: '1rem' }}>
+                                            <div style={{ width: '50px', height: '50px', backgroundImage: `url(${product.image})`, backgroundSize: 'cover', backgroundPosition: 'center', backgroundColor: '#f0f0f0' }}></div>
+                                        </td>
+                                        <td style={{ padding: '1rem', fontWeight: 500 }}>{product.name}</td>
+                                        <td style={{ padding: '1rem', color: '#666' }}>{product.category}</td>
+                                        <td style={{ padding: '1rem' }}>{product.stock}</td>
+                                        <td style={{ padding: '1rem', textAlign: 'right', fontFamily: 'var(--font-serif)' }}>₹{product.price.toLocaleString()}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                )}
                 {activeTab === 'dashboard' && (
                     <>
                         {success && <div style={{ backgroundColor: '#f0f9f0', borderLeft: '4px solid #4caf50', color: '#2e7d32', padding: '1.5rem', marginBottom: '2rem', boxShadow: '0 4px 12px rgba(0,0,0,0.05)' }}>Product added successfully to Cloudinary & Database.</div>}
@@ -214,6 +258,16 @@ const Admin = () => {
                                     <div>
                                         <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Description</label>
                                         <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Enter product details..." style={{ width: '100%', border: 'none', borderBottom: '1px solid #ccc', padding: '1rem 0', background: 'transparent', outline: 'none', minHeight: '80px', fontFamily: 'inherit', resize: 'vertical' }} />
+                                    </div>
+                                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '3rem' }}>
+                                        <div>
+                                            <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Sizes (Comma Separated)</label>
+                                            <input type="text" value={sizes} onChange={(e) => setSizes(e.target.value)} className="luxury-input" placeholder="e.g. S, M, L" style={{ width: '100%', border: 'none', borderBottom: '1px solid #ccc', padding: '0.5rem 0', outline: 'none' }} />
+                                        </div>
+                                        <div>
+                                            <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Colors (Comma Separated)</label>
+                                            <input type="text" value={colors} onChange={(e) => setColors(e.target.value)} className="luxury-input" placeholder="e.g. Gold, Silver, Rose" style={{ width: '100%', border: 'none', borderBottom: '1px solid #ccc', padding: '0.5rem 0', outline: 'none' }}/>
+                                        </div>
                                     </div>
                                     <div>
                                         <label style={{ fontSize: '0.7rem', textTransform: 'uppercase', color: '#999', marginBottom: '1rem', display: 'block', letterSpacing: '0.05em' }}>Product Imagery</label>

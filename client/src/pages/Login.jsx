@@ -72,6 +72,7 @@ const Login = () => {
 
                 <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.875rem' }}>
                     <p>Don't have an account yet? <Link to="/register" style={{ fontWeight: 600, textDecoration: 'underline', color: 'var(--color-pitch-black)' }}>Create Account</Link></p>
+                    <p style={{ marginTop: '1rem', color: '#666' }}>Administrator? Simply securely log in with your credentials above. <br/>Not an Admin yet? Use the Register option.</p>
                 </div>
             </div>
         </div>

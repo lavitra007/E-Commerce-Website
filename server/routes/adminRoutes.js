@@ -80,7 +80,7 @@ router.put("/stats", protect, admin, async (req, res) => {
 // @access  Private/Admin
 router.post("/products", protect, admin, upload.single("image"), async (req, res) => {
   try {
-    const { name, price, description, category, stock } = req.body;
+    const { name, price, description, category, stock, sizes, colors } = req.body;
     const imageUrl = req.file ? req.file.path : null;
 
     if (!imageUrl) {
@@ -94,7 +94,9 @@ router.post("/products", protect, admin, upload.single("image"), async (req, res
       category,
       stock,
       image: imageUrl,
-      images: [imageUrl]
+      images: [imageUrl],
+      sizes: sizes ? sizes.split(',') : [],
+      colors: colors ? colors.split(',') : []
     });
 
     const createdProduct = await product.save();

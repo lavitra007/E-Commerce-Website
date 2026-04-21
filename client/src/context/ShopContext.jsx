@@ -25,26 +25,29 @@ export const ShopProvider = ({ children }) => {
         fetchProducts();
     }, []);
 
+    const getCartId = (item) => `${item._id}-${item.selectedSize || ''}-${item.selectedColor || ''}`;
+
     const addToCart = (product) => {
         setCart((prev) => {
-            const exists = prev.find(item => item._id === product._id);
+            const productCartId = getCartId(product);
+            const exists = prev.find(item => getCartId(item) === productCartId);
             if (exists) {
-                return prev.map(item => item._id === product._id ? { ...item, quantity: item.quantity + 1 } : item);
+                return prev.map(item => getCartId(item) === productCartId ? { ...item, quantity: item.quantity + 1 } : item);
             }
-            return [...prev, { ...product, quantity: 1 }];
+            return [...prev, { ...product, quantity: 1, cartItemId: productCartId }];
         });
     };
 
-    const removeFromCart = (id) => {
-        setCart((prev) => prev.filter(item => item._id !== id));
+    const removeFromCart = (cartItemId) => {
+        setCart((prev) => prev.filter(item => getCartId(item) !== cartItemId));
     };
 
-    const updateQuantity = (id, newQuantity) => {
+    const updateQuantity = (cartItemId, newQuantity) => {
         if (newQuantity < 1) {
-            removeFromCart(id);
+            removeFromCart(cartItemId);
             return;
         }
-        setCart((prev) => prev.map(item => item._id === id ? { ...item, quantity: newQuantity } : item));
+        setCart((prev) => prev.map(item => getCartId(item) === cartItemId ? { ...item, quantity: newQuantity } : item));
     };
 
     const toggleWishlist = (product) => {

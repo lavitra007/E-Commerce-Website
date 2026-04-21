@@ -13,6 +13,10 @@ const ProductDetail = () => {
     const [currentImgIdx, setCurrentImgIdx] = useState(0);
     const [userInfo, setUserInfo] = useState(null);
     const [showAuthModal, setShowAuthModal] = useState(false);
+    
+    // Variant Selection State
+    const [selectedSize, setSelectedSize] = useState('');
+    const [selectedColor, setSelectedColor] = useState('');
 
     useEffect(() => {
         const storedUser = localStorage.getItem('userInfo');
@@ -21,6 +25,8 @@ const ProductDetail = () => {
         const found = products.find(p => p._id === id);
         if (found) {
             setProduct(found);
+            if (found.sizes && found.sizes.length > 0) setSelectedSize(found.sizes[0]);
+            if (found.colors && found.colors.length > 0) setSelectedColor(found.colors[0]);
         } else {
             navigate('/collection');
         }
@@ -29,7 +35,8 @@ const ProductDetail = () => {
     if (!product) return null;
 
     const isWishlisted = wishlist.some(item => item._id === product._id);
-    const cartItem = cart.find(item => item._id === product._id);
+    const currentCartId = `${product._id}-${selectedSize}-${selectedColor}`;
+    const cartItem = cart.find(item => `${item._id}-${item.selectedSize || ''}-${item.selectedColor || ''}` === currentCartId);
 
     const handleAction = (actionFn) => {
         if (!userInfo) {
@@ -84,11 +91,24 @@ const ProductDetail = () => {
 
                 <div style={{ marginBottom: '2.5rem' }}>
                     <p style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 400 }}>Color</p>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <div style={{ width: '40px', height: '40px', backgroundColor: '#5c5450', cursor: 'pointer' }}></div>
-                        <div style={{ width: '40px', height: '40px', backgroundColor: '#8a827d', cursor: 'pointer' }}></div>
-                        <div style={{ width: '40px', height: '40px', backgroundColor: '#a89c97', cursor: 'pointer' }}></div>
-                        <div style={{ width: '40px', height: '40px', backgroundColor: '#d0c6c1', cursor: 'pointer' }}></div>
+                    <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                        {(product.colors && product.colors.length > 0 ? product.colors : ['Classic', 'Gold', 'Silver', 'Rose']).map(color => (
+                            <button 
+                                key={color} 
+                                onClick={() => setSelectedColor(color)}
+                                style={{ 
+                                    border: selectedColor === color ? '2px solid #000' : '1px solid #ccc', 
+                                    padding: '0.5rem 1rem', 
+                                    cursor: 'pointer', 
+                                    backgroundColor: selectedColor === color ? '#000' : '#fff', 
+                                    color: selectedColor === color ? '#fff' : '#000',
+                                    transition: 'all 0.2s', 
+                                    fontSize: '0.875rem' 
+                                }}
+                            >
+                                {color}
+                            </button>
+                        ))}
                     </div>
                 </div>
 
@@ -98,8 +118,20 @@ const ProductDetail = () => {
                         <p onClick={() => alert("Size Guide Scale:\n\nUS 5: 15.7mm / 0.62\" \nUS 6: 16.5mm / 0.65\"\nUS 7: 17.3mm / 0.68\"\nUS 8: 18.1mm / 0.71\"\nUS 9: 19.0mm / 0.75\"")} style={{ fontSize: '0.875rem', color: '#666', textDecoration: 'underline', cursor: 'pointer' }}>Find Size</p>
                     </div>
                     <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                        {['US 5', 'US 6', 'US 7', 'US 8', 'US 9'].map(size => (
-                            <button key={size} style={{ border: '1px solid #ccc', padding: '0.5rem 1rem', cursor: 'pointer', backgroundColor: '#fff', transition: 'all 0.2s', fontSize: '0.875rem' }} onMouseOver={e=>e.currentTarget.style.borderColor='#000'} onMouseOut={e=>e.currentTarget.style.borderColor='#ccc'}>
+                        {(product.sizes && product.sizes.length > 0 ? product.sizes : ['US 5', 'US 6', 'US 7', 'US 8', 'US 9']).map(size => (
+                            <button 
+                                key={size} 
+                                onClick={() => setSelectedSize(size)}
+                                style={{ 
+                                    border: selectedSize === size ? '2px solid #000' : '1px solid #ccc', 
+                                    padding: '0.5rem 1rem', 
+                                    cursor: 'pointer', 
+                                    backgroundColor: selectedSize === size ? '#000' : '#fff', 
+                                    color: selectedSize === size ? '#fff' : '#000',
+                                    transition: 'all 0.2s', 
+                                    fontSize: '0.875rem' 
+                                }}
+                            >
                                 {size}
                             </button>
                         ))}
@@ -109,16 +141,16 @@ const ProductDetail = () => {
                 {cartItem ? (
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '3rem', width: '100%', maxWidth: '300px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: '1px solid #000', padding: '0.5rem', backgroundColor: '#f9f9f9' }}>
-                            <button onClick={() => updateQuantity(product._id, cartItem.quantity - 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>-</button>
+                            <button onClick={() => updateQuantity(currentCartId, cartItem.quantity - 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>-</button>
                             <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.25rem' }}>{cartItem.quantity}</span>
-                            <button onClick={() => updateQuantity(product._id, cartItem.quantity + 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>+</button>
+                            <button onClick={() => updateQuantity(currentCartId, cartItem.quantity + 1)} style={{ width: '40px', height: '40px', cursor: 'pointer', backgroundColor: 'transparent', border: 'none', fontSize: '1.5rem', transition: 'color 0.2s' }} onMouseOver={e=>e.currentTarget.style.color='#666'} onMouseOut={e=>e.currentTarget.style.color='#000'}>+</button>
                         </div>
                         <button onClick={() => navigate('/cart')} style={{ backgroundColor: '#f5f5f5', border: '1px solid #ddd', padding: '1rem', cursor: 'pointer', fontSize: '1rem', color: '#333', transition: 'background-color 0.2s' }} onMouseOver={e=>e.currentTarget.style.backgroundColor='#eaeaea'} onMouseOut={e=>e.currentTarget.style.backgroundColor='#f5f5f5'}>
                             Check Cart
                         </button>
                     </div>
                 ) : (
-                    <button onClick={() => handleAction(() => addToCart(product))} className="btn-primary" style={{ width: '100%', maxWidth: '300px', marginBottom: '3rem', padding: '1rem', fontSize: '1.1rem', backgroundColor: '#000', color: '#fff' }}>
+                    <button onClick={() => handleAction(() => addToCart({...product, selectedSize, selectedColor}))} className="btn-primary" style={{ width: '100%', maxWidth: '300px', marginBottom: '3rem', padding: '1rem', fontSize: '1.1rem', backgroundColor: '#000', color: '#fff' }}>
                         Add To Cart
                     </button>
                 )}

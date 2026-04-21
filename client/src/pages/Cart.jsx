@@ -50,22 +50,29 @@ const Cart = () => {
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                                             <div>
                                                 <h3 style={{ fontSize: '1.5rem', marginBottom: '0.5rem', fontWeight: 400 }}>{item.name}</h3>
-                                                <p style={{ color: '#666', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase' }}>{item.category}</p>
+                                                <p style={{ color: '#666', fontSize: '0.875rem', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{item.category}</p>
+                                                {(item.selectedSize || item.selectedColor) && (
+                                                    <p style={{ color: '#888', fontSize: '0.85rem' }}>
+                                                        {item.selectedSize && `Size: ${item.selectedSize}`} 
+                                                        {item.selectedSize && item.selectedColor && ' | '}
+                                                        {item.selectedColor && `Color: ${item.selectedColor}`}
+                                                    </p>
+                                                )}
                                             </div>
-                                            <button onClick={() => toggleWishlist(item)} style={{ cursor: 'pointer', transition: 'transform 0.2s' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+                                            <button onClick={() => toggleWishlist(item)} style={{ cursor: 'pointer', transition: 'transform 0.2s', border: 'none', background: 'none' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
                                                 {isWishlisted ? <FaHeart size={22} color="#000" /> : <FiHeart size={22} color="#000" />}
                                             </button>
                                         </div>
-                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '1rem' }}>
                                             <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', color: '#111' }}>₹{(item.price * item.quantity).toLocaleString()}</p>
                                             
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', border: '1px solid #ccc' }}>
-                                                    <button onClick={() => updateQuantity(item._id, item.quantity - 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>-</button>
+                                                    <button onClick={() => updateQuantity(item.cartItemId || item._id, item.quantity - 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9', border: 'none' }}>-</button>
                                                     <span style={{ padding: '0 1rem', fontFamily: 'var(--font-serif)' }}>{item.quantity}</span>
-                                                    <button onClick={() => updateQuantity(item._id, item.quantity + 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9' }}>+</button>
+                                                    <button onClick={() => updateQuantity(item.cartItemId || item._id, item.quantity + 1)} style={{ padding: '0.5rem 0.75rem', cursor: 'pointer', backgroundColor: '#f9f9f9', border: 'none' }}>+</button>
                                                 </div>
-                                                <button onClick={() => removeFromCart(item._id)} style={{ textDecoration: 'underline', fontSize: '0.875rem', color: '#555', cursor: 'pointer' }}>Remove</button>
+                                                <button onClick={() => removeFromCart(item.cartItemId || item._id)} style={{ textDecoration: 'underline', fontSize: '0.875rem', color: '#555', cursor: 'pointer', border: 'none', background: 'none' }}>Remove</button>
                                             </div>
                                         </div>
                                     </div>

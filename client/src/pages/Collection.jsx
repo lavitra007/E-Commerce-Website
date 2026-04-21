@@ -1,17 +1,32 @@
-import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useSearchParams } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
-import { FiHeart, FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import { FiHeart, FiChevronDown, FiChevronUp, FiFilter } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 
 const Collection = () => {
     const { products, wishlist, toggleWishlist } = useContext(ShopContext);
+    const [searchParams, setSearchParams] = useSearchParams();
+    const categoryQuery = searchParams.get('category');
+    
     const [hoveredProduct, setHoveredProduct] = useState(null);
     const [sortType, setSortType] = useState('Recommended');
     const [showSort, setShowSort] = useState(false);
+    const [gridCols, setGridCols] = useState(3);
+    const [showFilters, setShowFilters] = useState(false);
+    const [activeCategory, setActiveCategory] = useState(categoryQuery || '');
 
-    const getSortedProducts = () => {
-        let sorted = [...products];
+    useEffect(() => {
+        if (categoryQuery) {
+            setActiveCategory(categoryQuery);
+        }
+    }, [categoryQuery]);
+
+    const getFilteredAndSortedProducts = () => {
+        let filtered = [...products];
+        if (activeCategory) {
+            filtered = filtered.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+        }
         switch(sortType) {
             case 'Price Low to High':
                 return sorted.sort((a, b) => a.price - b.price);
@@ -25,7 +40,7 @@ const Collection = () => {
         }
     };
 
-    const displayProducts = getSortedProducts();
+    const displayProducts = getFilteredAndSortedProducts();
 
     return (
         <div style={{ padding: '4rem', minHeight: '80vh', animation: 'fadeIn 0.5s ease-in' }}>
@@ -33,9 +48,14 @@ const Collection = () => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', borderTop: '1px solid #eaeaea', borderBottom: '1px solid #eaeaea', padding: '1rem 0' }}>
                 <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <button style={{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
-                        Filter +
+                    <button onClick={() => setShowFilters(!showFilters)} style={{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
+                        <FiFilter /> Filter {activeCategory && '(1 Active)'}
                     </button>
+                    {activeCategory && (
+                        <button onClick={() => { setActiveCategory(''); setSearchParams({}); }} style={{ background: 'none', border: 'none', fontSize: '0.9rem', cursor: 'pointer', textDecoration: 'underline', color: '#666' }}>
+                            Reset Filters
+                        </button>
+                    )}
                 </div>
                 
                 <div style={{ position: 'relative' }}>
@@ -45,15 +65,23 @@ const Collection = () => {
                         </button>
                         <div style={{ display: 'flex', gap: '0.2rem' }}>
                             {/* Grid toggle icons */}
-                            <div style={{ display: 'flex', gap: '2px' }}>
+                            <div 
+                                onClick={() => setGridCols(4)}
+                                style={{ display: 'flex', gap: '2px', cursor: 'pointer', opacity: gridCols === 4 ? 1 : 0.3 }}
+                                title="View 4 Columns"
+                            >
                                 <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
                                 <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
                                 <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
                                 <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
                             </div>
-                            <div style={{ display: 'flex', gap: '2px', marginLeft:'0.5rem' }}>
-                                <div style={{width:'12px',height:'8px',border:'1px solid #000'}}></div>
-                                <div style={{width:'12px',height:'8px',border:'1px solid #000'}}></div>
+                            <div 
+                                onClick={() => setGridCols(2)}
+                                style={{ display: 'flex', gap: '2px', marginLeft:'0.5rem', cursor: 'pointer', opacity: gridCols === 2 ? 1 : 0.3 }}
+                                title="View 2 Columns"
+                            >
+                                <div style={{width:'12px',height:'8px',border:'1px solid #000', backgroundColor: '#000'}}></div>
+                                <div style={{width:'12px',height:'8px',border:'1px solid #000', backgroundColor: '#000'}}></div>
                             </div>
                         </div>
                     </div>
@@ -71,10 +99,36 @@ const Collection = () => {
                 </div>
             </div>
 
+            {showFilters && (
+                <div style={{ marginBottom: '3rem', padding: '2rem', backgroundColor: '#f9f9f9', display: 'flex', gap: '2rem' }}>
+                    <div>
+                        <h4 style={{ marginBottom: '1rem', fontWeight: 600, textTransform: 'uppercase', fontSize: '0.875rem', letterSpacing: '0.05em' }}>Categories</h4>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+                            {['Fine Jewelry', 'Daily Wear', 'Wedding', 'Earrings'].map(cat => (
+                                <label key={cat} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer', fontSize: '0.9rem', color: '#333' }}>
+                                    <input 
+                                        type="radio" 
+                                        name="category_filter" 
+                                        checked={activeCategory === cat} 
+                                        onChange={() => {
+                                            setActiveCategory(cat);
+                                            setSearchParams({ category: cat });
+                                        }} 
+                                        style={{ accentColor: '#000' }} 
+                                    />
+                                    {cat}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            )}
+
             <div style={{ 
                 display: 'grid', 
-                gridTemplateColumns: 'repeat(3, 1fr)', 
-                gap: '2.5rem' 
+                gridTemplateColumns: `repeat(${gridCols}, 1fr)`, 
+                gap: '2.5rem',
+                transition: 'grid-template-columns 0.3s ease'
             }}>
                 {displayProducts.map(product => {
                     const isWishlisted = wishlist.some(item => item._id === product._id);
