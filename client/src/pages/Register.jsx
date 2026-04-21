@@ -8,6 +8,8 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [adminSecret, setAdminSecret] = useState('');
+    const [showAdminField, setShowAdminField] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -15,7 +17,7 @@ const Register = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { name, email, password });
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, { name, email, password, adminSecret });
             localStorage.setItem('userInfo', JSON.stringify(response.data));
             navigate('/'); // Redirect to home page on success
         } catch (err) {
@@ -45,6 +47,18 @@ const Register = () => {
                         <label style={{ fontSize: '0.875rem', color: '#222', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Password*</label>
                         <input type="password" required className="luxury-input" placeholder="Enter your password" value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
+
+                    <div style={{ textAlign: 'right', marginTop: '-1rem' }}>
+                        <button type="button" onClick={() => setShowAdminField(!showAdminField)} style={{ background: 'none', border: 'none', color: '#666', fontSize: '0.75rem', cursor: 'pointer', textDecoration: 'underline' }}>
+                            {showAdminField ? 'Hide Admin Access' : 'Register as Admin'}
+                        </button>
+                    </div>
+                    {showAdminField && (
+                        <div style={{ animation: 'fadeIn 0.3s ease-in' }}>
+                            <label style={{ fontSize: '0.875rem', color: '#222', marginBottom: '0.5rem', display: 'block', letterSpacing: '0.05em' }}>Admin Access Code</label>
+                            <input type="password" className="luxury-input" placeholder="Enter admin code (optional)" value={adminSecret} onChange={(e) => setAdminSecret(e.target.value)} />
+                        </div>
+                    )}
 
                     <button type="submit" disabled={loading} className="btn-primary" style={{ marginTop: '1rem', width: '100%', opacity: loading ? 0.7 : 1 }}>
                         {loading ? 'CREATING...' : 'CREATE ACCOUNT'}

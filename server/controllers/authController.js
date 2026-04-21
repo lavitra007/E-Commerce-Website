@@ -3,7 +3,7 @@ const jwt = require("jsonwebtoken");
 
 // Generate Token
 const generateToken = (id) => {
-  return jwt.sign({ id }, "secret", {
+  return jwt.sign({ id }, process.env.JWT_SECRET || "secret", {
     expiresIn: "1d"
   });
 };
@@ -11,7 +11,7 @@ const generateToken = (id) => {
 // Register
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, adminSecret } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -19,10 +19,16 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
+    let role = "user";
+    if (adminSecret && adminSecret === process.env.ADMIN_SECRET) {
+      role = "admin";
+    }
+
     const user = await User.create({
       name,
       email,
-      password
+      password,
+      role
     });
 
     res.status(201).json({

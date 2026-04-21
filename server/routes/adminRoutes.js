@@ -18,6 +18,23 @@ router.get("/users", protect, admin, async (req, res) => {
   }
 });
 
+// @route   DELETE /api/admin/users/:id
+// @desc    Delete a user (Admin only)
+// @access  Private/Admin
+router.delete("/users/:id", protect, admin, async (req, res) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (user) {
+      await User.deleteOne({ _id: req.params.id });
+      res.json({ message: "User removed" });
+    } else {
+      res.status(404).json({ message: "User not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error deleting user" });
+  }
+});
+
 // @route   GET /api/admin/stats
 // @desc    Get basic platform stats (Admin only)
 // @access  Private/Admin
