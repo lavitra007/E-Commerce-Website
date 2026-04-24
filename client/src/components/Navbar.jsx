@@ -4,6 +4,8 @@ import { FiUser, FiHeart, FiShoppingCart } from 'react-icons/fi';
 
 const Navbar = () => {
     const [scrolled, setScrolled] = useState(false);
+    const userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    const isAdmin = userInfo && (userInfo.role === 'admin' || userInfo.email === 'monika1@gmail.com');
 
     useEffect(() => {
         const handleScroll = () => {
@@ -67,6 +69,9 @@ const Navbar = () => {
                 <Link to="/collection?category=fine-jewelry" style={{ position: 'relative', transition: 'opacity 0.3s ease', opacity: 0.8, paddingBottom: '2px' }} onMouseOver={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.textUnderlineOffset = '4px'; }} onMouseOut={e => { e.currentTarget.style.opacity = 0.8; e.currentTarget.style.textDecoration = 'none'; }}>Fine Jewelry</Link>
                 <Link to="/collection?category=earrings" style={{ position: 'relative', transition: 'opacity 0.3s ease', opacity: 0.8, paddingBottom: '2px' }} onMouseOver={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.textUnderlineOffset = '4px'; }} onMouseOut={e => { e.currentTarget.style.opacity = 0.8; e.currentTarget.style.textDecoration = 'none'; }}>Earrings</Link>
                 <Link to="/collection?category=wedding" style={{ position: 'relative', transition: 'opacity 0.3s ease', opacity: 0.8, paddingBottom: '2px' }} onMouseOver={e => { e.currentTarget.style.opacity = 1; e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.textUnderlineOffset = '4px'; }} onMouseOut={e => { e.currentTarget.style.opacity = 0.8; e.currentTarget.style.textDecoration = 'none'; }}>Wedding</Link>
+                {isAdmin && (
+                    <Link to="/admin" style={{ position: 'relative', transition: 'color 0.3s ease', color: '#cc0000', fontWeight: 'bold', paddingBottom: '2px' }} onMouseOver={e => { e.currentTarget.style.textDecoration = 'underline'; e.currentTarget.style.textUnderlineOffset = '4px'; }} onMouseOut={e => { e.currentTarget.style.textDecoration = 'none'; }}>ADMIN PORTAL</Link>
+                )}
             </nav>
         </>
     );
