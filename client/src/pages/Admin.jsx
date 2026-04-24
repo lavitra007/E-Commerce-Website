@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { ShopContext } from '../context/ShopContext';
+import { BASE_URL } from '../config';
 
 const Admin = () => {
     const navigate = useNavigate();
@@ -32,8 +33,8 @@ const Admin = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const [{ data: statsData }, { data: usersData }] = await Promise.all([
-                axios.get(`${import.meta.env.VITE_API_URL}/api/admin/stats`, config),
-                axios.get(`${import.meta.env.VITE_API_URL}/api/admin/users`, config)
+                axios.get(`${BASE_URL}/api/admin/stats`, config),
+                axios.get(`${BASE_URL}/api/admin/users`, config)
             ]);
             setStats(statsData);
             setUsers(usersData);
@@ -71,7 +72,7 @@ const Admin = () => {
         if (colors) formData.append('colors', colors.split(',').map(c => c.trim()).join(','));
 
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/admin/products`, formData, {
+            await axios.post(`${BASE_URL}/api/admin/products`, formData, {
                 headers: { 
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ${userInfo.token}` 
@@ -105,7 +106,7 @@ const Admin = () => {
             if (updateOrders) payload.activeOrders = updateOrders;
             if (updateRevenue) payload.revenue = updateRevenue;
 
-            await axios.put(`${import.meta.env.VITE_API_URL}/api/admin/stats`, payload, {
+            await axios.put(`${BASE_URL}/api/admin/stats`, payload, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             setSuccess(true);
@@ -122,7 +123,7 @@ const Admin = () => {
     const handleDeleteUser = async (id) => {
         if (!window.confirm('Are you sure you want to remove this user from the system?')) return;
         try {
-            await axios.delete(`${import.meta.env.VITE_API_URL}/api/admin/users/${id}`, {
+            await axios.delete(`${BASE_URL}/api/admin/users/${id}`, {
                 headers: { Authorization: `Bearer ${userInfo.token}` }
             });
             fetchAdminData();

@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { BASE_URL } from '../config';
 
 export const ShopContext = createContext();
 
@@ -12,7 +13,7 @@ export const ShopProvider = ({ children }) => {
     const fetchProducts = async () => {
         try {
             setLoading(true);
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
+            const { data } = await axios.get(`${BASE_URL}/api/products`);
             setProducts(data);
         } catch (error) {
             console.error("Error fetching products:", error);

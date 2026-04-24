@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { BASE_URL } from '../config';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -16,7 +17,7 @@ const Login = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password });
+            const response = await axios.post(`${BASE_URL}/api/auth/login`, { email, password });
             // Save JWT token and user info
             localStorage.setItem('userInfo', JSON.stringify(response.data));
             

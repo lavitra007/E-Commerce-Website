@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { BASE_URL } from '../config';
 
 const Account = () => {
     const navigate = useNavigate();
@@ -30,7 +31,7 @@ const Account = () => {
     const fetchProfile = async () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
-            const { data } = await axios.get(`${import.meta.env.VITE_API_URL}/api/auth/me`, config);
+            const { data } = await axios.get(`${BASE_URL}/api/auth/me`, config);
             setName(data.name || '');
             setPhone(data.phone || '');
             setAddresses(data.addresses || []);
@@ -45,7 +46,7 @@ const Account = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const payload = { name, phone };
-            const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/api/auth/profile`, payload, config);
+            const { data } = await axios.put(`${BASE_URL}/api/auth/profile`, payload, config);
             localStorage.setItem('userInfo', JSON.stringify(data));
             setUserInfo(data);
             setMessage('Profile updated successfully');
@@ -65,7 +66,7 @@ const Account = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const updatedAddresses = [...addresses, { label: newAddressLabel, text: newAddressText }];
-            const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/api/auth/profile`, { addresses: updatedAddresses }, config);
+            const { data } = await axios.put(`${BASE_URL}/api/auth/profile`, { addresses: updatedAddresses }, config);
             setAddresses(data.addresses);
             setNewAddressText('');
             setMessage('Address added successfully');
@@ -84,7 +85,7 @@ const Account = () => {
         try {
             const config = { headers: { Authorization: `Bearer ${userInfo.token}` } };
             const updatedAddresses = addresses.filter((_, idx) => idx !== indexToRemove);
-            const { data } = await axios.put(`${import.meta.env.VITE_API_URL}/api/auth/profile`, { addresses: updatedAddresses }, config);
+            const { data } = await axios.put(`${BASE_URL}/api/auth/profile`, { addresses: updatedAddresses }, config);
             setAddresses(data.addresses);
             setMessage('Address removed successfully');
             setTimeout(() => setMessage(''), 3000);
