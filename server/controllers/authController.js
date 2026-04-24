@@ -23,8 +23,9 @@ exports.registerUser = async (req, res) => {
     }
 
     let role = "user";
-    if (adminSecret && ADMIN_SECRET && adminSecret === ADMIN_SECRET) {
+    if (adminSecret && ADMIN_SECRET && adminSecret.trim() === ADMIN_SECRET.trim()) {
       role = "admin";
+      console.log(`User ${email} registered with ADMIN privileges.`);
     }
 
     const user = await User.create({
@@ -56,9 +57,10 @@ exports.loginUser = async (req, res) => {
 
     if (user && (await user.matchPassword(password))) {
       // If a valid admin secret is provided, upgrade this user's role to admin
-      if (adminSecret && ADMIN_SECRET && adminSecret === ADMIN_SECRET) {
+      if (adminSecret && ADMIN_SECRET && adminSecret.trim() === ADMIN_SECRET.trim()) {
         user.role = "admin";
         await user.save();
+        console.log(`User ${email} upgraded to ADMIN during login.`);
       }
 
       res.json({

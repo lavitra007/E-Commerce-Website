@@ -18,7 +18,8 @@ const Login = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password, adminSecret });
+            const trimmedSecret = adminSecret ? adminSecret.trim() : '';
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/login`, { email, password, adminSecret: trimmedSecret });
             // Save JWT token and user info
             localStorage.setItem('userInfo', JSON.stringify(response.data));
             
