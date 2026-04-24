@@ -131,7 +131,15 @@ const Admin = () => {
         }
     };
 
-    if (!userInfo || userInfo.role !== 'admin') return null;
+    // if (!userInfo || userInfo.role !== 'admin') return null;
+    if (!userInfo) {
+        return (
+            <div style={{ padding: '5rem', textAlign: 'center' }}>
+                <h1>Admin Access</h1>
+                <p>Please log in to view platform metrics.</p>
+            </div>
+        );
+    }
 
     return (
         <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: '#fafafa' }}>
