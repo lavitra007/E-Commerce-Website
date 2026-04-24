@@ -9,7 +9,6 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
-    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -80,11 +79,8 @@ const Login = () => {
                             </button>
                         </div>
                     </div>
-
                     <div style={{ textAlign: 'right' }}>
                         <a href="#" style={{ fontSize: '0.75rem', textDecoration: 'underline', color: '#555' }}>Forgot password?</a>
-                    </div>
-
                     </div>
 
                     <button type="submit" disabled={loading} className="btn-primary" style={{ marginTop: '1rem', width: '100%', opacity: loading ? 0.7 : 1 }}>
@@ -94,7 +90,6 @@ const Login = () => {
 
                 <div style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.875rem' }}>
                     <p>Don't have an account yet? <Link to="/register" style={{ fontWeight: 600, textDecoration: 'underline', color: 'var(--color-pitch-black)' }}>Create Account</Link></p>
-                    <p style={{ marginTop: '1rem', color: '#666' }}>Administrator? Simply securely log in with your credentials above. <br/>Not an Admin yet? Use the Register option.</p>
                 </div>
             </div>
         </div>
