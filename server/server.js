@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("E-Commerce Backend Running");
+  res.send("E-Commerce Backend Running (Updated April 24)");
 });
 
 // Routes
