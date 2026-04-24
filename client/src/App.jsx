@@ -12,7 +12,6 @@ import Wishlist from './pages/Wishlist';
 import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
-import Admin from './pages/Admin';
 import Collection from './pages/Collection';
 
 function App() {
@@ -30,7 +29,6 @@ function App() {
             <Route path="/product/:id" element={<ProductDetail />} />
             <Route path="/cart" element={<Cart />} />
             <Route path="/account" element={<Account />} />
-            <Route path="/admin" element={<Admin />} />
             <Route path="/collection" element={<Collection />} />
             {/* Fallbacks */}
             <Route path="/about" element={<Home />} />

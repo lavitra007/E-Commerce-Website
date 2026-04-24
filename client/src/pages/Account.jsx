@@ -133,9 +133,7 @@ const Account = () => {
                         <li onClick={() => setActiveTab('orders')} style={{ marginBottom: '1.5rem', fontWeight: activeTab === 'orders' ? 600 : 400, color: activeTab === 'orders' ? '#000' : '#666', fontSize: '1.1rem', cursor: 'pointer' }}>Order History</li>
                         <li onClick={() => setActiveTab('profile')} style={{ marginBottom: '1.5rem', fontWeight: activeTab === 'profile' ? 600 : 400, color: activeTab === 'profile' ? '#000' : '#666', fontSize: '1.1rem', cursor: 'pointer' }}>Profile Details</li>
                         <li onClick={() => setActiveTab('addresses')} style={{ marginBottom: '1.5rem', fontWeight: activeTab === 'addresses' ? 600 : 400, color: activeTab === 'addresses' ? '#000' : '#666', fontSize: '1.1rem', cursor: 'pointer' }}>Addresses</li>
-                        {userInfo.role === 'admin' && (
-                            <li onClick={() => navigate('/admin')} style={{ marginBottom: '1.5rem', fontWeight: 600, color: '#111', fontSize: '1.1rem', cursor: 'pointer', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Admin Dashboard</li>
-                        )}
+
                         <li style={{ marginTop: '3rem' }}>
                             <button onClick={() => setShowLogoutConfirm(true)} style={{ background: 'none', border: 'none', textDecoration: 'underline', color: '#000', fontSize: '1rem', cursor: 'pointer', opacity: 0.8 }}>
                                 Sign Out

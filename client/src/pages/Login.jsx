@@ -20,12 +20,7 @@ const Login = () => {
             const response = await axios.post(`${BASE_URL}/api/auth/login`, { email, password });
             // Save JWT token and user info
             localStorage.setItem('userInfo', JSON.stringify(response.data));
-            
-            if (response.data.role === 'admin') {
-                navigate('/admin');
-            } else {
-                navigate('/'); // Redirect to home page on success
-            }
+            navigate('/'); // Redirect to home page on success
         } catch (err) {
             setError(err.response?.data?.message || 'Login failed. Please check your credentials.');
         } finally {

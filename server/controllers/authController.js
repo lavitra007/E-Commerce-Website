@@ -3,7 +3,6 @@ const jwt = require("jsonwebtoken");
 
 // Generate Token
 const JWT_SECRET = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY || "secret";
-const ADMIN_SECRET = process.env.ADMIN_SECRET || process.env.ADMIN_SECRET_KEY;
 
 const generateToken = (id) => {
   return jwt.sign({ id }, JWT_SECRET, {
@@ -14,7 +13,7 @@ const generateToken = (id) => {
 // Register
 exports.registerUser = async (req, res) => {
   try {
-    const { name, email, password, adminSecret } = req.body;
+    const { name, email, password } = req.body;
 
     const userExists = await User.findOne({ email });
 
@@ -22,24 +21,16 @@ exports.registerUser = async (req, res) => {
       return res.status(400).json({ message: "User already exists" });
     }
 
-    let role = "user";
-    if (adminSecret && ADMIN_SECRET && adminSecret.trim() === ADMIN_SECRET.trim()) {
-      role = "admin";
-      console.log(`User ${email} registered with ADMIN privileges.`);
-    }
-
     const user = await User.create({
       name,
       email,
-      password,
-      role
+      password
     });
 
     res.status(201).json({
       _id: user._id,
       name: user.name,
       email: user.email,
-      role: user.role,
       token: generateToken(user._id)
     });
 
@@ -51,23 +42,15 @@ exports.registerUser = async (req, res) => {
 // Login
 exports.loginUser = async (req, res) => {
   try {
-    const { email, password, adminSecret } = req.body;
+    const { email, password } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
-      // If a valid admin secret is provided, upgrade this user's role to admin
-      if (adminSecret && ADMIN_SECRET && adminSecret.trim() === ADMIN_SECRET.trim()) {
-        user.role = "admin";
-        await user.save();
-        console.log(`User ${email} upgraded to ADMIN during login.`);
-      }
-
       res.json({
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
         token: generateToken(user._id)
       });
     } else {
@@ -88,7 +71,6 @@ exports.getUserProfile = async (req, res) => {
         _id: user._id,
         name: user.name,
         email: user.email,
-        role: user.role,
         phone: user.phone,
         addresses: user.addresses
       });
@@ -122,10 +104,9 @@ exports.updateUserProfile = async (req, res) => {
         _id: updatedUser._id,
         name: updatedUser.name,
         email: updatedUser.email,
-        role: updatedUser.role,
         phone: updatedUser.phone,
         addresses: updatedUser.addresses,
-        token: generateToken(updatedUser._id) // issue new token just in case
+        token: generateToken(updatedUser._id)
       });
     } else {
       res.status(404).json({ message: "User not found" });

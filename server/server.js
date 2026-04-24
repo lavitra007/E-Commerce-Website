@@ -4,7 +4,6 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 const authRoutes = require("./routes/authRoutes");
 const productRoutes = require("./routes/productRoutes"); 
-const adminRoutes = require("./routes/adminRoutes");
 const { errorHandler } = require("./middleware/errorMiddleware"); 
 
 dotenv.config();
@@ -26,7 +25,6 @@ app.get("/", (req, res) => {
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes); 
-app.use("/api/admin", adminRoutes); 
 
 // Error Middleware 
 app.use(errorHandler); 
