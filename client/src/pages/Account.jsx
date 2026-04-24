@@ -108,7 +108,7 @@ const Account = () => {
     return (
         <div style={{ padding: '4rem', minHeight: '80vh', animation: 'fadeIn 0.5s ease-in', position: 'relative' }}>
             {showLogoutConfirm && (
-                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 100 }}>
+                <div style={{ position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.5)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 2000 }}>
                     <div style={{ backgroundColor: '#fff', padding: '3rem', maxWidth: '400px', width: '90%', textAlign: 'center', boxShadow: '0 4px 20px rgba(0,0,0,0.1)' }}>
                         <h2 style={{ fontSize: '1.5rem', marginBottom: '1rem', fontWeight: 400 }}>Sign Out</h2>
                         <p style={{ color: '#666', marginBottom: '2rem', lineHeight: 1.6 }}>Are you sure you want to securely log out of your account?</p>
