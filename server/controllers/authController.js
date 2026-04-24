@@ -2,8 +2,11 @@ const User = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 // Generate Token
+const JWT_SECRET = process.env.JWT_SECRET || process.env.JWT_SECRET_KEY || "secret";
+const ADMIN_SECRET = process.env.ADMIN_SECRET || process.env.ADMIN_SECRET_KEY;
+
 const generateToken = (id) => {
-  return jwt.sign({ id }, process.env.JWT_SECRET || "secret", {
+  return jwt.sign({ id }, JWT_SECRET, {
     expiresIn: "1d"
   });
 };
@@ -20,7 +23,7 @@ exports.registerUser = async (req, res) => {
     }
 
     let role = "user";
-    if (adminSecret && adminSecret === process.env.ADMIN_SECRET) {
+    if (adminSecret && ADMIN_SECRET && adminSecret === ADMIN_SECRET) {
       role = "admin";
     }
 
