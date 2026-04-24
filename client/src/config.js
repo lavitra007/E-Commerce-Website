@@ -1,1 +1,2 @@
-export const BASE_URL = import.meta.env.VITE_API_URL || "https://farout-luxuries-backend.onrender.com";
+// Prioritize the live backend URL to ensure reliability in production
+export const BASE_URL = "https://farout-luxuries-backend.onrender.com";
