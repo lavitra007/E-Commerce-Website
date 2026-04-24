@@ -50,11 +50,17 @@ exports.registerUser = async (req, res) => {
 // Login
 exports.loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, adminSecret } = req.body;
 
     const user = await User.findOne({ email });
 
     if (user && (await user.matchPassword(password))) {
+      // If a valid admin secret is provided, upgrade this user's role to admin
+      if (adminSecret && ADMIN_SECRET && adminSecret === ADMIN_SECRET) {
+        user.role = "admin";
+        await user.save();
+      }
+
       res.json({
         _id: user._id,
         name: user.name,
