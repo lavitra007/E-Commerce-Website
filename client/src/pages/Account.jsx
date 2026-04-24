@@ -4,7 +4,6 @@ import axios from 'axios';
 import { BASE_URL } from '../config';
 
 const Account = () => {
-    console.log("Using API Base URL:", BASE_URL);
     const navigate = useNavigate();
     const [userInfo, setUserInfo] = useState(JSON.parse(localStorage.getItem('userInfo')));
     const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);

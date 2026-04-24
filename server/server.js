@@ -12,7 +12,7 @@ connectDB();
 const app = express();
 
 app.use(cors({
-  origin: "*",
+  origin: ["http://localhost:5173", "https://faroutluxuries.pages.dev"],
   credentials: true
 }));
 app.use(express.json());
@@ -26,8 +26,19 @@ app.get("/", (req, res) => {
 app.use("/api/auth", authRoutes);
 app.use("/api/products", productRoutes); 
 
-// Error Middleware 
-app.use(errorHandler); 
+// Diagnostic 404 handler
+app.use((req, res) => {
+  console.log(`404 hit: ${req.method} ${req.url}`);
+  res.status(404).json({ 
+    message: `Endpoint ${req.url} not found on this server.`,
+    debugInfo: {
+      method: req.method,
+      path: req.path,
+      baseUrl: req.baseUrl,
+      originalUrl: req.originalUrl
+    }
+  });
+});
 
 const PORT = process.env.PORT || 5000;
 
