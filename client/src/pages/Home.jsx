@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import exclusiveReleaseImg from '../assets/exclusive-release.png';
 
 const Home = () => {
   const navigate = useNavigate();
@@ -52,7 +53,7 @@ const Home = () => {
           
           {/* Exclusive Release */}
           <div onClick={() => navigate('/collection')} style={{ 
-            backgroundImage: 'url("/exclusive-release.png")', 
+            backgroundImage: `url(${exclusiveReleaseImg})`, 
             backgroundSize: 'cover', 
             backgroundPosition: 'center', 
             gridColumn: 'span 2', 
