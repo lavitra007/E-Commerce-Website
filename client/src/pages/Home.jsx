@@ -27,7 +27,7 @@ const Home = () => {
         <div style={{ textAlign: 'center', zIndex: 2, position: 'absolute', bottom: '15%' }}>
           <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: '#fff', fontWeight: 400, letterSpacing: '0.05em', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>The New Standard</h1>
           <Link to="/collection">
-            <button className="btn-primary" style={{ backgroundColor: '#fff', color: '#000' }}>Discover More</button>
+            <button className="btn-primary" style={{ backgroundColor: '#fff', color: '#000', padding: '0.75rem 2rem', fontSize: '0.9rem', letterSpacing: '0.1em' }}>Discover More</button>
           </Link>
         </div>
       </section>
@@ -75,15 +75,15 @@ const Home = () => {
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.2)', transition: 'background-color 0.4s ease' }} onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.1)'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.2)'}></div>
             <div style={{ 
               zIndex: 1, 
-              backgroundColor: 'rgba(255, 255, 255, 0.9)', 
-              backdropFilter: 'blur(10px)',
-              padding: '2.5rem 5rem', 
+              backgroundColor: 'rgba(255, 255, 255, 0.85)', 
+              backdropFilter: 'blur(12px)',
+              padding: '1.5rem 3rem', 
               textAlign: 'center',
-              border: '1px solid rgba(255,255,255,0.3)',
-              boxShadow: '0 15px 35px rgba(0,0,0,0.1)'
+              border: '1px solid rgba(255,255,255,0.4)',
+              boxShadow: '0 10px 25px rgba(0,0,0,0.05)'
             }}>
-              <span style={{ color: '#000', letterSpacing: '0.25em', fontSize: '1.5rem', textTransform: 'uppercase', fontWeight: 300 }}>Exclusive Release</span>
-              <div style={{ width: '40px', height: '1px', backgroundColor: '#000', margin: '1rem auto 0', transition: 'width 0.4s ease' }}></div>
+              <span style={{ color: '#000', letterSpacing: '0.2em', fontSize: '1.1rem', textTransform: 'uppercase', fontWeight: 300 }}>Exclusive Jewelry Release</span>
+              <div style={{ width: '30px', height: '1px', backgroundColor: '#000', margin: '0.75rem auto 0', transition: 'width 0.4s ease' }}></div>
             </div>
           </div>
         </div>
