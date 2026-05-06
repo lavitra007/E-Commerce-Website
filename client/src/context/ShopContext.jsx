@@ -15,63 +15,51 @@ export const ShopProvider = ({ children }) => {
             setLoading(true);
             const { data } = await axios.get(`${BASE_URL}/api/products`);
             
-            // Map of distinct images for categories to ensure variety and no blank images
-            const catImgPool = {
-                'fine jewelry': [
-                    'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1515562141207-7a8efbfc3473?q=80&w=800&auto=format&fit=crop'
-                ],
-                'daily wear': [
-                    'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1573408301145-b98c4af06c8e?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1617264761033-0c4f826359f1?q=80&w=800&auto=format&fit=crop'
-                ],
-                'wedding': [
-                    'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1515562141207-7a8efbfc3473?q=80&w=800&auto=format&fit=crop'
-                ],
-                'earrings': [
-                    'https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop'
-                ],
-                'exclusive release': [
-                    'https://images.unsplash.com/photo-1599643477877-537ef5278482?q=80&w=800&auto=format&fit=crop',
-                    'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop'
-                ],
-                'fashion': [
-                    'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop'
-                ]
-            };
-            const defaultPool = [
+            // Verified high-end imagery
+            const verifiedImgs = [
                 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop',
-                'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop'
+                'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1599643477877-537ef5278482?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1601121141461-9d6647bca1ed?q=80&w=800&auto=format&fit=crop',
+                'https://images.unsplash.com/photo-1617264761033-0c4f826359f1?q=80&w=800&auto=format&fit=crop'
             ];
 
             const enrichedProducts = data.map((product, idx) => {
-                const cat = (product.category || '').toLowerCase();
-                const pool = catImgPool[cat] || defaultPool;
-                const selectedImg = pool[idx % pool.length];
-                
+                const selectedImg = verifiedImgs[idx % verifiedImgs.length];
                 return {
                     ...product,
-                    image: selectedImg,
-                    images: [selectedImg] // ensures ProductDetail shows the image
+                    image: product.image && product.image.includes('http') ? product.image : selectedImg,
+                    images: product.images?.length ? product.images : [selectedImg]
                 };
             });
             
-            // If very few products are returned (e.g., blank pages), let's duplicate them to fill the UI
-            let finalProducts = enrichedProducts;
-            if (finalProducts.length > 0 && finalProducts.length < 8) {
-                const clones = finalProducts.map((p, i) => ({
-                    ...p, 
-                    _id: p._id + '-clone-' + i, 
-                    name: p.name + ' (Variant)',
-                    image: (catImgPool[(p.category || '').toLowerCase()] || defaultPool)[(i+1) % 2],
-                    images: [(catImgPool[(p.category || '').toLowerCase()] || defaultPool)[(i+1) % 2]]
-                }));
-                finalProducts = [...finalProducts, ...clones];
-            }
+            // Ensure core categories have items so pages are never blank
+            const coreCategories = ['Fine Jewelry', 'Daily Wear', 'Wedding', 'Earrings', 'Fashion', 'Exclusive Release'];
+            let finalProducts = [...enrichedProducts];
+            
+            coreCategories.forEach((cat, idx) => {
+                const existing = finalProducts.filter(p => p.category?.toLowerCase() === cat.toLowerCase());
+                if (existing.length < 4) {
+                    for (let i = existing.length; i < 4; i++) {
+                        const newId = `mock-${cat.replace(/\s+/g, '-')}-${i}`;
+                        const img = verifiedImgs[(idx + i) % verifiedImgs.length];
+                        finalProducts.push({
+                            _id: newId,
+                            name: `Signature ${cat} Item ${i+1}`,
+                            description: `Exquisite piece from our ${cat} collection, crafted with precision.`,
+                            price: 45000 + (i * 15000),
+                            category: cat,
+                            image: img,
+                            images: [img],
+                            stock: 5,
+                            sizes: ['US 5', 'US 6', 'US 7'],
+                            colors: ['Gold', 'Silver']
+                        });
+                    }
+                }
+            });
 
             setProducts(finalProducts);
         } catch (error) {

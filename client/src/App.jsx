@@ -13,6 +13,7 @@ import ProductDetail from './pages/ProductDetail';
 import Cart from './pages/Cart';
 import Account from './pages/Account';
 import Collection from './pages/Collection';
+import Admin from './pages/Admin';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
             <Route path="/cart" element={<Cart />} />
             <Route path="/account" element={<Account />} />
             <Route path="/collection" element={<Collection />} />
+            <Route path="/admin" element={<Admin />} />
             {/* Fallbacks */}
             <Route path="/about" element={<Home />} />
           </Routes>
