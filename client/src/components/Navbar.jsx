@@ -42,6 +42,9 @@ const Navbar = () => {
                     <Link to="/cart" style={{ color: '#000', display: 'flex', alignItems: 'center', transition: 'transform 0.2s', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.1)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
                         <FiShoppingCart size={20} />
                     </Link>
+                    {userInfo?.role === 'admin' && (
+                        <Link to="/admin" style={{ fontSize: '0.75rem', fontWeight: 600, color: '#666', border: '1px solid #666', padding: '2px 6px', borderRadius: '4px' }}>ADMIN</Link>
+                    )}
                 </div>
             </div>
 

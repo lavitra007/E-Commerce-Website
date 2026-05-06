@@ -25,7 +25,9 @@ const Collection = () => {
     const getFilteredAndSortedProducts = () => {
         let filtered = [...products];
         if (activeCategory) {
-            filtered = filtered.filter(p => p.category.toLowerCase() === activeCategory.toLowerCase());
+            const norm = (c) => (c || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+            const activeNorm = norm(activeCategory);
+            filtered = filtered.filter(p => norm(p.category) === activeNorm);
         }
         switch(sortType) {
             case 'Price Low to High':

@@ -15,7 +15,7 @@ export const ShopProvider = ({ children }) => {
             setLoading(true);
             const { data } = await axios.get(`${BASE_URL}/api/products`);
             
-            // Verified high-end imagery
+            // Verified high-end imagery from Unsplash
             const verifiedImgs = [
                 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop',
                 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
@@ -26,36 +26,48 @@ export const ShopProvider = ({ children }) => {
                 'https://images.unsplash.com/photo-1617264761033-0c4f826359f1?q=80&w=800&auto=format&fit=crop'
             ];
 
+            // Normalize category helper
+            const normCat = (c) => (c || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+
             const enrichedProducts = data.map((product, idx) => {
                 const selectedImg = verifiedImgs[idx % verifiedImgs.length];
+                // Force a valid image if the current one is missing or not a full URL
+                const hasGoodImg = product.image && product.image.startsWith('http');
+                const finalImg = hasGoodImg ? product.image : selectedImg;
+                
                 return {
                     ...product,
-                    image: product.image && product.image.includes('http') ? product.image : selectedImg,
-                    images: product.images?.length ? product.images : [selectedImg]
+                    image: finalImg,
+                    images: (product.images && product.images.length > 0 && product.images[0].startsWith('http')) 
+                        ? product.images 
+                        : [finalImg]
                 };
             });
             
-            // Ensure core categories have items so pages are never blank
-            const coreCategories = ['Fine Jewelry', 'Daily Wear', 'Wedding', 'Earrings', 'Fashion', 'Exclusive Release'];
+            // Core categories as defined in Navbar and UI
+            const coreCategories = ['Fashion', 'Daily Wear', 'Fine Jewelry', 'Earrings', 'Wedding', 'Exclusive Release'];
             let finalProducts = [...enrichedProducts];
             
-            coreCategories.forEach((cat, idx) => {
-                const existing = finalProducts.filter(p => p.category?.toLowerCase() === cat.toLowerCase());
+            coreCategories.forEach((catName, idx) => {
+                const searchNorm = normCat(catName);
+                const existing = finalProducts.filter(p => normCat(p.category) === searchNorm);
+                
+                // If category is missing or sparse, seed it with high-end items
                 if (existing.length < 4) {
                     for (let i = existing.length; i < 4; i++) {
-                        const newId = `mock-${cat.replace(/\s+/g, '-')}-${i}`;
+                        const newId = `seed-${searchNorm}-${i}`;
                         const img = verifiedImgs[(idx + i) % verifiedImgs.length];
                         finalProducts.push({
                             _id: newId,
-                            name: `Signature ${cat} Item ${i+1}`,
-                            description: `Exquisite piece from our ${cat} collection, crafted with precision.`,
-                            price: 45000 + (i * 15000),
-                            category: cat,
+                            name: `Lux ${catName} Piece ${i + 1}`,
+                            description: `A stunning masterpiece from our ${catName} collection. Exclusively designed for the sophisticated palette.`,
+                            price: 25000 + (Math.floor(Math.random() * 150000)),
+                            category: catName, // Keep original name for display
                             image: img,
                             images: [img],
-                            stock: 5,
-                            sizes: ['US 5', 'US 6', 'US 7'],
-                            colors: ['Gold', 'Silver']
+                            stock: 10,
+                            sizes: ['US 6', 'US 7', 'US 8'],
+                            colors: ['Gold', 'Platinum']
                         });
                     }
                 }
