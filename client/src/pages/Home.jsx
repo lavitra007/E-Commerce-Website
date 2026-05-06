@@ -27,7 +27,7 @@ const Home = () => {
         <div style={{ textAlign: 'center', zIndex: 2, position: 'absolute', bottom: '15%' }}>
           <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: '#fff', fontWeight: 400, letterSpacing: '0.05em', textShadow: '0 2px 10px rgba(0,0,0,0.5)' }}>The New Standard</h1>
           <Link to="/collection">
-            <button className="btn-primary" style={{ backgroundColor: '#fff', color: '#000', padding: '0.75rem 2rem', fontSize: '0.9rem', letterSpacing: '0.1em' }}>Discover More</button>
+            <button className="btn-primary" style={{ backgroundColor: '#fff', color: '#000', padding: '1rem 3rem', fontSize: '1rem', letterSpacing: '0.15em', transition: 'transform 0.3s ease' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>Discover More</button>
           </Link>
         </div>
       </section>
@@ -42,13 +42,13 @@ const Home = () => {
           gridAutoRows: '500px'
         }}>
           {/* Collection I */}
-          <div onClick={() => navigate('/collection?category=Fine+Jewelry')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-            <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem' }}>Fine Jewelry</span>
+          <div onClick={() => navigate('/collection?category=Fine+Jewelry')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'all 0.4s ease', cursor: 'pointer' }}>
+            <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem', transition: 'transform 0.3s ease' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>Fine Jewelry</span>
           </div>
           
           {/* Collection II */}
-          <div onClick={() => navigate('/collection?category=Daily+Wear')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'transform 0.4s ease', cursor: 'pointer' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.98)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-            <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem' }}>Daily Wear</span>
+          <div onClick={() => navigate('/collection?category=Daily+Wear')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', display: 'flex', justifyContent: 'center', alignItems: 'flex-end', paddingBottom: '2rem', transition: 'all 0.4s ease', cursor: 'pointer' }}>
+            <span style={{ color: '#fff', letterSpacing: '0.1em', textTransform: 'uppercase', backgroundColor: 'rgba(0,0,0,0.5)', padding: '0.5rem 1.5rem', fontSize: '0.875rem', transition: 'transform 0.3s ease' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>Daily Wear</span>
           </div>
           
           {/* Exclusive Release */}
@@ -65,25 +65,19 @@ const Home = () => {
             position: 'relative',
             borderRadius: '4px',
             boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
-          }} onMouseOver={e => {
-            e.currentTarget.style.transform = 'scale(0.99)';
-            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
-          }} onMouseOut={e => {
-            e.currentTarget.style.transform = 'scale(1)';
-            e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
           }}>
             <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.2)', transition: 'background-color 0.4s ease' }} onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.1)'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.2)'}></div>
             <div style={{ 
               zIndex: 1, 
               backgroundColor: 'rgba(255, 255, 255, 0.85)', 
               backdropFilter: 'blur(12px)',
-              padding: '1.5rem 3rem', 
+              padding: '1rem 2.5rem', 
               textAlign: 'center',
               border: '1px solid rgba(255,255,255,0.4)',
-              boxShadow: '0 10px 25px rgba(0,0,0,0.05)'
-            }}>
-              <span style={{ color: '#000', letterSpacing: '0.2em', fontSize: '1.1rem', textTransform: 'uppercase', fontWeight: 300 }}>Exclusive Jewelry Release</span>
-              <div style={{ width: '30px', height: '1px', backgroundColor: '#000', margin: '0.75rem auto 0', transition: 'width 0.4s ease' }}></div>
+              boxShadow: '0 10px 25px rgba(0,0,0,0.05)',
+              transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1)'
+            }} onMouseOver={e => e.currentTarget.style.transform = 'scale(1.05)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
+              <span style={{ color: '#000', letterSpacing: '0.2em', fontSize: '1rem', textTransform: 'uppercase', fontWeight: 300 }}>Exclusive Jewelry Release</span>
             </div>
           </div>
         </div>
