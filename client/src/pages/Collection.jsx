@@ -48,14 +48,7 @@ const Collection = () => {
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '3rem', borderTop: '1px solid #eaeaea', borderBottom: '1px solid #eaeaea', padding: '1rem 0' }}>
                 <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <button onClick={() => setShowFilters(!showFilters)} style={{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
-                        <FiFilter /> Filter {activeCategory && '(1 Active)'}
-                    </button>
-                    {activeCategory && (
-                        <button onClick={() => { setActiveCategory(''); setSearchParams({}); }} style={{ background: 'none', border: 'none', fontSize: '0.9rem', cursor: 'pointer', textDecoration: 'underline', color: '#666' }}>
-                            Reset Filters
-                        </button>
-                    )}
+                    {/* Filter option removed as requested */}
                 </div>
                 
                 <div style={{ position: 'relative' }}>
@@ -63,21 +56,26 @@ const Collection = () => {
                         <button onClick={() => setShowSort(!showSort)} style={{ background: 'none', border: 'none', fontSize: '1.1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 500 }}>
                             Sort By {showSort ? <FiChevronUp /> : <FiChevronDown />}
                         </button>
-                        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                            <span style={{ fontSize: '0.8rem', color: '#666', textTransform: 'uppercase', letterSpacing: '0.1em' }}>View</span>
+                        <div style={{ display: 'flex', gap: '0.2rem' }}>
+                            {/* Grid toggle icons */}
                             <div 
                                 onClick={() => setGridCols(4)}
-                                style={{ display: 'flex', gap: '2px', cursor: 'pointer', opacity: gridCols === 4 ? 1 : 0.3, transition: 'opacity 0.3s' }}
-                                title="4 Columns"
+                                style={{ display: 'flex', gap: '2px', cursor: 'pointer', opacity: gridCols === 4 ? 1 : 0.3 }}
+                                title="View 4 Columns"
                             >
-                                {[1,2,3,4].map(i => <div key={i} style={{width:'6px',height:'15px',backgroundColor:'#000'}}></div>)}
+                                <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
+                                <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
+                                <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
+                                <div style={{width:'8px',height:'8px',backgroundColor:'#000'}}></div>
                             </div>
                             <div 
                                 onClick={() => setGridCols(3)}
-                                style={{ display: 'flex', gap: '2px', cursor: 'pointer', opacity: gridCols === 3 ? 1 : 0.3, transition: 'opacity 0.3s' }}
-                                title="3 Columns"
+                                style={{ display: 'flex', gap: '2px', marginLeft:'0.5rem', cursor: 'pointer', opacity: gridCols === 3 ? 1 : 0.3 }}
+                                title="View 3 Columns"
                             >
-                                {[1,2,3].map(i => <div key={i} style={{width:'8px',height:'15px',backgroundColor:'#000'}}></div>)}
+                                <div style={{width:'10px',height:'10px',backgroundColor:'#000'}}></div>
+                                <div style={{width:'10px',height:'10px',backgroundColor:'#000'}}></div>
+                                <div style={{width:'10px',height:'10px',backgroundColor:'#000'}}></div>
                             </div>
                         </div>
                     </div>
@@ -95,73 +93,7 @@ const Collection = () => {
                 </div>
             </div>
 
-            {showFilters && (
-                <div style={{ marginBottom: '3rem', animation: 'slideDown 0.4s ease-out' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem' }}>
-                        <h4 style={{ fontWeight: 600, textTransform: 'uppercase', fontSize: '0.8rem', letterSpacing: '0.1em' }}>Filter by Category</h4>
-                        <button onClick={() => { setActiveCategory(''); setSearchParams({}); }} style={{ background: 'none', border: 'none', fontSize: '0.8rem', cursor: 'pointer', color: activeCategory ? '#000' : '#ccc', textDecoration: 'underline' }}>Clear All</button>
-                    </div>
-                    <div style={{ 
-                        display: 'grid', 
-                        gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', 
-                        gap: '1rem' 
-                    }}>
-                        {[
-                            { name: 'Rings', img: 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=400&auto=format&fit=crop' },
-                            { name: 'Pendants', img: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=400&auto=format&fit=crop' },
-                            { name: 'Bracelets', img: 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=400&auto=format&fit=crop' },
-                            { name: 'Earrings', img: 'https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=400&auto=format&fit=crop' },
-                            { name: 'Necklaces', img: 'https://images.unsplash.com/photo-1599643477877-537ef5278482?q=80&w=400&auto=format&fit=crop' }
-                        ].map(cat => (
-                            <div 
-                                key={cat.name} 
-                                onClick={() => {
-                                    const nextCat = activeCategory === cat.name ? '' : cat.name;
-                                    setActiveCategory(nextCat);
-                                    setSearchParams(nextCat ? { category: nextCat } : {});
-                                }}
-                                style={{ 
-                                    position: 'relative', 
-                                    height: '100px', 
-                                    cursor: 'pointer', 
-                                    overflow: 'hidden',
-                                    borderRadius: '4px',
-                                    border: activeCategory === cat.name ? '2px solid #000' : '1px solid #eee',
-                                    transition: 'all 0.3s ease'
-                                }}
-                            >
-                                <div style={{ 
-                                    backgroundImage: `url(${cat.img})`, 
-                                    backgroundSize: 'cover', 
-                                    backgroundPosition: 'center', 
-                                    width: '100%', 
-                                    height: '100%',
-                                    filter: activeCategory === cat.name ? 'grayscale(0)' : 'grayscale(100%) opacity(0.6)',
-                                    transition: 'all 0.4s ease'
-                                }} />
-                                <div style={{ 
-                                    position: 'absolute', 
-                                    top: 0, left: 0, right: 0, bottom: 0, 
-                                    display: 'flex', 
-                                    justifyContent: 'center', 
-                                    alignItems: 'center',
-                                    backgroundColor: activeCategory === cat.name ? 'rgba(0,0,0,0.1)' : 'rgba(255,255,255,0.2)',
-                                    transition: 'all 0.3s ease'
-                                }}>
-                                    <span style={{ 
-                                        color: activeCategory === cat.name ? '#fff' : '#000', 
-                                        fontWeight: 600, 
-                                        textTransform: 'uppercase', 
-                                        fontSize: '0.75rem', 
-                                        letterSpacing: '0.1em',
-                                        textShadow: activeCategory === cat.name ? '0 1px 4px rgba(0,0,0,0.4)' : 'none'
-                                    }}>{cat.name}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </div>
-            )}
+
 
             <div style={{ 
                 display: 'grid', 
