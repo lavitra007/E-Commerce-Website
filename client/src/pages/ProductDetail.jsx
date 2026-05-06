@@ -85,7 +85,7 @@ const ProductDetail = () => {
                     {product.description || "Impeccably crafted from the finest materials. This signature piece offers a timeless aesthetic and unparalleled comfort, redefining luxury for the modern era."}
                 </p>
                 
-                <p style={{ color: '#666', fontSize: '0.875rem', marginBottom: '2rem', letterSpacing: '0.05em' }}>Stock Availability: <span style={{ color: product.stock > 0 ? '#2e7d32' : '#c62828' }}>{product.stock > 0 ? `${product.stock} In Stock` : 'Out of Stock'}</span></p>
+                <p style={{ color: '#666', fontSize: '0.875rem', marginBottom: '2rem', letterSpacing: '0.05em' }}>Stock Availability: <span style={{ color: product.stock > 0 ? '#2e7d32' : '#c62828' }}>{product.stock > 0 ? 'Available' : 'Out of Stock'}</span></p>
 
                 <p style={{ fontFamily: 'var(--font-serif)', fontSize: '1.5rem', marginBottom: '2.5rem', color: '#111' }}>₹{product.price.toLocaleString()}</p>
 

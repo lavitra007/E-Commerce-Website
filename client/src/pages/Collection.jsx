@@ -105,21 +105,11 @@ const Collection = () => {
                     const isWishlisted = wishlist.some(item => item._id === product._id);
                     const isHovered = hoveredProduct === product._id;
 
-                    // Category Image Mapping Override
-                    const categoryImages = {
-                        'rings': 'https://images.unsplash.com/photo-1605100804763-247f67b3557e?q=80&w=800&auto=format&fit=crop',
-                        'pendants': 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop',
-                        'bracelets': 'https://images.unsplash.com/photo-1611591437281-460bfbe1220a?q=80&w=800&auto=format&fit=crop',
-                        'earrings': 'https://images.unsplash.com/photo-1635767798638-3e25273a8236?q=80&w=800&auto=format&fit=crop',
-                        'necklaces': 'https://images.unsplash.com/photo-1599643477877-537ef5278482?q=80&w=800&auto=format&fit=crop'
-                    };
-                    const productImg = categoryImages[product.category.toLowerCase()] || product.image;
-
                     return (
                         <div key={product._id} style={{ display: 'flex', flexDirection: 'column' }} onMouseOver={() => setHoveredProduct(product._id)} onMouseLeave={() => setHoveredProduct(null)}>
                             <div style={{ 
                                 position: 'relative', 
-                                backgroundImage: `url(${productImg})`, 
+                                backgroundImage: `url(${product.image})`, 
                                 backgroundSize: 'cover', 
                                 backgroundPosition: 'center', 
                                 height: '400px', 
