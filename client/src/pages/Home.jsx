@@ -51,10 +51,38 @@ const Home = () => {
           </div>
           
           {/* Exclusive Release */}
-          <div onClick={() => navigate('/collection')} style={{ backgroundImage: 'url("https://images.unsplash.com/photo-1573408301145-b98c4654440c?q=80&w=1600&auto=format&fit=crop")', backgroundSize: 'cover', backgroundPosition: 'center', gridColumn: 'span 2', display: 'flex', justifyContent: 'center', alignItems: 'center', transition: 'transform 0.4s ease', cursor: 'pointer', position: 'relative' }} onMouseOver={e => e.currentTarget.style.transform = 'scale(0.99)'} onMouseOut={e => e.currentTarget.style.transform = 'scale(1)'}>
-            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.2)' }}></div>
-            <div style={{ zIndex: 1, backgroundColor: '#fff', padding: '2rem 4rem', textAlign: 'center' }}>
-              <span style={{ color: '#000', letterSpacing: '0.15em', fontSize: '1.25rem', textTransform: 'uppercase', fontWeight: 600 }}>Exclusive Release</span>
+          <div onClick={() => navigate('/collection')} style={{ 
+            backgroundImage: 'url("/exclusive-release.png")', 
+            backgroundSize: 'cover', 
+            backgroundPosition: 'center', 
+            gridColumn: 'span 2', 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            transition: 'all 0.6s cubic-bezier(0.16, 1, 0.3, 1)', 
+            cursor: 'pointer', 
+            position: 'relative',
+            borderRadius: '4px',
+            boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
+          }} onMouseOver={e => {
+            e.currentTarget.style.transform = 'scale(0.99)';
+            e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.2)';
+          }} onMouseOut={e => {
+            e.currentTarget.style.transform = 'scale(1)';
+            e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.1)';
+          }}>
+            <div style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.2)', transition: 'background-color 0.4s ease' }} onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.1)'} onMouseOut={e => e.currentTarget.style.backgroundColor = 'rgba(0,0,0,0.2)'}></div>
+            <div style={{ 
+              zIndex: 1, 
+              backgroundColor: 'rgba(255, 255, 255, 0.9)', 
+              backdropFilter: 'blur(10px)',
+              padding: '2.5rem 5rem', 
+              textAlign: 'center',
+              border: '1px solid rgba(255,255,255,0.3)',
+              boxShadow: '0 15px 35px rgba(0,0,0,0.1)'
+            }}>
+              <span style={{ color: '#000', letterSpacing: '0.25em', fontSize: '1.5rem', textTransform: 'uppercase', fontWeight: 300 }}>Exclusive Release</span>
+              <div style={{ width: '40px', height: '1px', backgroundColor: '#000', margin: '1rem auto 0', transition: 'width 0.4s ease' }}></div>
             </div>
           </div>
         </div>
