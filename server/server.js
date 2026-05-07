@@ -19,7 +19,7 @@ app.use(express.json());
 
 // Test route
 app.get("/", (req, res) => {
-  res.send("E-Commerce Backend Running (Updated April 24)");
+  res.send("Farout Luxuries API - Version 1.1 (Updated May 7, 2026)");
 });
 
 // Routes
