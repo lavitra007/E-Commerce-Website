@@ -21,10 +21,18 @@ exports.createProduct = async (req, res, next) => {
 
 exports.updateProduct = async (req, res, next) => {
   try {
-    const product = await Product.findByIdAndUpdate(req.params.id, req.body, { new: true });
-    if (!product) return res.status(404).json({ message: "Product not found" });
+    console.log(`Updating product: ${req.params.id}`, req.body);
+    const updateData = { ...req.body };
+    delete updateData._id; // Prevent accidental ID modification
+    
+    const product = await Product.findByIdAndUpdate(req.params.id, updateData, { new: true });
+    if (!product) {
+        console.log(`Product NOT FOUND: ${req.params.id}`);
+        return res.status(404).json({ message: "Product not found in database" });
+    }
     res.json(product);
   } catch (error) {
+    console.error(`Error in updateProduct: ${error.message}`);
     next(error);
   }
 };

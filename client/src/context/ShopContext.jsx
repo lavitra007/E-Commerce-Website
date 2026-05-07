@@ -48,21 +48,63 @@ export const ShopProvider = ({ children }) => {
             const coreCategories = ['Fashion', 'Daily Wear', 'Fine Jewelry', 'Earrings', 'Wedding', 'Exclusive Release'];
             let finalProducts = [...enrichedProducts];
             
+            const luxuryNaming = {
+                'Fashion': [
+                    { name: "Aurora Gold Link", desc: "A contemporary masterpiece featuring hand-polished gold links for the modern fashionista." },
+                    { name: "Seraphina Velvet Choker", desc: "Exquisite velvet paired with a central sapphire, defining timeless elegance." },
+                    { name: "Midnight Bangle Set", desc: "Dusk-inspired dark chrome bangles with subtle diamond encrustations." },
+                    { name: "Azure Coast Signet", desc: "Inspired by the Mediterranean, this ring features a deep turquoise stone." }
+                ],
+                'Daily Wear': [
+                    { name: "Lumina Gold Studs", desc: "Understated brilliance for everyday wear. Perfectly balanced and lightweight." },
+                    { name: "Petite Infinity Band", desc: "A delicate symbol of forever, crafted in 18k rose gold." },
+                    { name: "Classic Solstice Chain", desc: "The foundation of every jewelry collection. A sleek, versatile gold chain." },
+                    { name: "Minimalist Pearl Drop", desc: "A single freshwater pearl suspended from a fine silver wire." }
+                ],
+                'Fine Jewelry': [
+                    { name: "Celestial Diamond Halo", desc: "A breathtaking center stone surrounded by a constellation of brilliant diamonds." },
+                    { name: "Royal Emerald Pendant", desc: "A majestic pear-cut emerald set in a vintage-inspired platinum frame." },
+                    { name: "Astrid Sapphire Band", desc: "Deep blue sapphires alternated with diamonds in a modern channel setting." },
+                    { name: "Legacy Heirloom Locket", desc: "Hand-engraved gold locket designed to hold your most precious memories." }
+                ],
+                'Earrings': [
+                    { name: "Cascade Crystal Drops", desc: "Light-catching crystals that move with you, creating a shimmering waterfall effect." },
+                    { name: "Orion Starburst Studs", desc: "Inspired by the night sky, these studs feature a brilliant central diamond." },
+                    { name: "Radiance Ear Jackets", desc: "Versatile design that adds a modern edge to the classic diamond stud." },
+                    { name: "Infinite Loop Hoops", desc: "Seamless gold hoops that represent the beauty of continuity." }
+                ],
+                'Wedding': [
+                    { name: "Eternal Vow Platinum Band", desc: "Symbolize your commitment with this timeless, high-polish platinum band." },
+                    { name: "Graceful Solitaire Ring", desc: "The ultimate expression of love, featuring a hand-selected brilliant cut diamond." },
+                    { name: "Amour Diamond Set", desc: "A perfectly matched set of earrings and pendant for your special day." },
+                    { name: "Infinity Knot Wedding Band", desc: "Woven gold bands representing two lives becoming one." }
+                ],
+                'Exclusive Release': [
+                    { name: "Supernova Galactic Cuff", desc: "A bold statement piece featuring rare cosmic-hued gemstones." },
+                    { name: "Nebula Aura Necklace", desc: "Iridescent opals set in a fluid, sculptural gold frame." },
+                    { name: "The Farout Sovereign", desc: "Our signature piece. A masterpiece of craftsmanship and rare materials." },
+                    { name: "Eclipse Obsidian Signet", desc: "Carved volcanic glass set in brushed gunmetal for a striking look." }
+                ]
+            };
+
             coreCategories.forEach((catName, idx) => {
                 const searchNorm = normCat(catName);
                 const existing = finalProducts.filter(p => normCat(p.category) === searchNorm);
                 
                 // If category is missing or sparse, seed it with high-end items
                 if (existing.length < 4) {
+                    const categoryPool = luxuryNaming[catName] || luxuryNaming['Fashion'];
                     for (let i = existing.length; i < 4; i++) {
                         const newId = `seed-${searchNorm}-${i}`;
                         const img = verifiedImgs[(idx + i) % verifiedImgs.length];
+                        const nameObj = categoryPool[i % categoryPool.length];
+                        
                         finalProducts.push({
                             _id: newId,
-                            name: `Lux ${catName} Piece ${i + 1}`,
-                            description: `A stunning masterpiece from our ${catName} collection. Exclusively designed for the sophisticated palette.`,
+                            name: nameObj.name,
+                            description: nameObj.desc,
                             price: 25000 + (Math.floor(Math.random() * 150000)),
-                            category: catName, // Keep original name for display
+                            category: catName,
                             image: img,
                             images: [img],
                             stock: 10,
